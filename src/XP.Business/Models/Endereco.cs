@@ -11,5 +11,7 @@
         public string Cidade { get; set; }
         public string Estado { get; set; }
         public bool EnderoPrincipal { get; set; }
+
+        public Usuario Usuario { get; set; }
     }
 }
