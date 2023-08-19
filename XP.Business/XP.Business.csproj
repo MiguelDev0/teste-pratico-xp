@@ -6,8 +6,4 @@
     <Nullable>enable</Nullable>
   </PropertyGroup>
 
-  <ItemGroup>
-    <ProjectReference Include="..\..\XP.Business\XP.Business.csproj" />
-  </ItemGroup>
-
 </Project>
