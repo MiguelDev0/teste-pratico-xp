@@ -1,3 +1,6 @@
+using Microsoft.EntityFrameworkCore;
+using XP.Data.Context;
+
 namespace XP.API
 {
     public class Program
@@ -5,6 +8,13 @@ namespace XP.API
         public static void Main(string[] args)
         {
             var builder = WebApplication.CreateBuilder(args);
+
+            builder.Services.AddDbContext<MeuDbContext>(options =>
+            {
+                options.UseSqlServer(builder.Configuration.GetConnectionString("XpDB"));
+            });
+
+            builder.Services.AddScoped<MeuDbContext>();
 
             builder.Services.AddControllers();
 
