@@ -4,7 +4,7 @@ namespace XP.Business.Interfaces
 {
     public interface IUsuarioRepository : IRepository<Usuario>
     {
-        Task<Usuario> ListarTodosOsClientes();
-        Task<Usuario> ListarDetalhesDoCliente(Guid clientId);
+        Task<Usuario> ListarTodosOsClientes(Guid Id);
+        Task<Usuario> ListarDetalhesDoCliente(Guid Id);
     }
 }

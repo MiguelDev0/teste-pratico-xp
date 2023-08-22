@@ -1,5 +1,8 @@
 using Microsoft.EntityFrameworkCore;
+using XP.API.Configuration;
+using XP.Business.Interfaces;
 using XP.Data.Context;
+using XP.Data.Ropositories;
 
 namespace XP.API
 {
@@ -13,7 +16,8 @@ namespace XP.API
             {
                 options.UseSqlServer(builder.Configuration.GetConnectionString("XpDB"));
             });
-
+            builder.Services.AddScoped<IUsuarioRepository, UsuarioRepository>();
+            builder.Services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
             builder.Services.AddScoped<MeuDbContext>();
 
             builder.Services.AddControllers();
