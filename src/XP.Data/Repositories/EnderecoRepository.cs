@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Microsoft.EntityFrameworkCore;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -15,9 +16,10 @@ namespace XP.Data.Ropositories
         {
         }
 
-        public Task<Endereco> ObterEnderecoPorUsuario(Guid usuarioId)
+        public async Task<IEnumerable<Endereco>> ObterEnderecosPorUsuario(Guid usuarioId)
         {
-            throw new NotImplementedException();
+            return await Db.Enderecos.AsNoTracking().Include(f => f.UsuarioId == usuarioId)
+                .OrderBy(e => e.Complemento).ToListAsync();
         }
 
         public Task<Endereco> ObterEnderecoPrincipal(Guid usuarioId)

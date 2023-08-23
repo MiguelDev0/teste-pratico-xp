@@ -1,4 +1,5 @@
-﻿using XP.Business.Interfaces;
+﻿using Microsoft.EntityFrameworkCore;
+using XP.Business.Interfaces;
 using XP.Business.Models;
 using XP.Data.Context;
 
@@ -13,9 +14,10 @@ namespace XP.Data.Ropositories
             throw new NotImplementedException();
         }
 
-        public Task<IEnumerable<Email>> ObterEmailsPorUsuario()
+        public async Task<IEnumerable<Email>> ObterEmailsPorUsuario(Guid usuarioId)
         {
-            throw new NotImplementedException();
+            return await Db.Emails.AsNoTracking().Include(f => f.UsuarioId == usuarioId)
+                .OrderBy(e => e.EmailCadastro).ToListAsync();
         }
     }
 }

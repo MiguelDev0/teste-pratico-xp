@@ -9,12 +9,12 @@ namespace XP.Data.Ropositories
     {
         public UsuarioRepository(MeuDbContext context) : base(context) { }
 
-        public Task<Usuario> ListarDetalhesDoCliente(Guid Id)
+        public Task<Usuario> ObterUsuarioEmail(Guid Id)
         {
             throw new NotImplementedException();
         }
 
-        public async Task<Usuario> ListarTodosOsClientes(Guid Id)
+        public async Task<Usuario> ObterDetalhesDoCliente(Guid Id)
         {
             return await Db.Usuarios.AsNoTracking().Include(c => c.Emails).Include(c => c.Enderecos).FirstOrDefaultAsync(c => c.Id == Id);
         }
