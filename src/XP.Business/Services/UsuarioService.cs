@@ -53,6 +53,7 @@ namespace XP.Business.Services
             await _emailRepository.Atualizar(email);
         }
 
+
         public async Task AtualizarEndereco(Endereco endereco)
         {
             if (!ExecutarValidacao(new EnderecoValidation(), endereco)) return;
@@ -62,19 +63,13 @@ namespace XP.Business.Services
 
         public async Task<bool> Remover(Guid id)
         {
-            var enderecos = await _enderecoRepository.ObterEnderecosPorUsuario(id);
-            var emails = await _emailRepository.ObterEmailsPorUsuario(id);
+            var endereco = await _enderecoRepository.ObterPorId(id);
+            var emails = await _emailRepository.ObterPorId(id);
 
-            foreach (var endereco in enderecos)
+            if (endereco != null && emails != null)
             {
-                if (endereco != null)
-                    await _enderecoRepository.Remover(endereco.Id);
-            }
-
-            foreach (var email in emails)
-            {
-                if (email != null)
-                    await _enderecoRepository.Remover(email.Id);
+                await _enderecoRepository.Remover(endereco.Id);
+                await _emailRepository.Remover(emails.Id);
             }
 
             await _usuarioRepository.Remover(id);

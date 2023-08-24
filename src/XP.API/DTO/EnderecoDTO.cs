@@ -34,5 +34,7 @@ namespace XP.API.DTO
         public string Estado { get; set; }
 
         public Guid UsuarioId { get; set; }
+        [Required(ErrorMessage = "O campo {0} é obrigatório")]
+        public bool EnderecoPrincipal { get; set; }
     }
 }

@@ -5,7 +5,7 @@ namespace XP.Business.Models
     public class Email : Entity
     {
         public Guid UsuarioId { get; set; }
-        public string EmailCadastro { get; set; }
+        public string? EmailCadastro { get; set; }
         public int? EmailPrincipal{ get; set; }
         public bool IsEmailPrincipal {
             get

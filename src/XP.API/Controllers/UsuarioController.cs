@@ -28,11 +28,7 @@ namespace XP.API.Controllers
             _enderecoRepository = enderecoRepository;
             _emailRepository = emailRepository;
         }
-        [HttpGet("hello")]
-        public string helloWorld()
-        {
-            return "Teste de fumaça";
-        }
+
         [HttpGet]
         public async Task<IEnumerable<UsuarioDTO>> ListarTodos()
         {
@@ -52,11 +48,14 @@ namespace XP.API.Controllers
         }
 
         [HttpPost]
-        public async Task<ActionResult<UsuarioDTO>> Adicionar(UsuarioDTO usuarioDTO)
+        public async Task<ActionResult> Adicionar(UsuarioDTO usuarioDTO)
         {
             if (!ModelState.IsValid) return NotFound(ModelState);
 
-            await _usuarioService.Adicionar(_mapper.Map<Usuario>(usuarioDTO));
+            var context = await _usuarioService.Adicionar(_mapper.Map<Usuario>(usuarioDTO));
+
+            if(!context)
+                return BadRequest("Não foi possível salvar o usuario");
 
             return Ok(usuarioDTO);
         }
