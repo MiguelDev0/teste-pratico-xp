@@ -19,13 +19,40 @@ namespace XP.Business.Services
             _emailRepository = emailRepository;
             _enderecoRepository = enderecoRepository;
         }
+
+        public async Task<List<Usuario>> BuscarTodos()
+        {
+            var result = await _usuarioRepository.ObterTodos();
+            if (result == null)
+                throw new System.Exception("Não foram encontrados usuários no banco de dados");
+
+            return result;
+        }
+
+        public async Task<Usuario> BuscaDetalhada(Guid id)
+        {
+            var result = await _enderecoRepository.ObterPorId(id);
+
+            if(result == null)
+                throw new System.Exception("Id invalido");
+
+            var usuario = await _usuarioRepository.ObterDetalhesDoCliente(id);
+
+            if(usuario.Emails.Any(x => x.EmailPrincipal == 1) || usuario.Enderecos.Any(x => x.EnderoPrincipal == true))
+            {
+                throw new System.Exception("Usuario não possui email ou endereço principal");
+            }
+            return usuario;
+
+        }
+
         public async Task<bool> Adicionar(Usuario usuario)
         {
             if (!ExecutarValidacao(new UsuarioValidation(), usuario)) return false;
-
+            
             if (_usuarioRepository.Buscar(f => f.Telefone == usuario.Telefone).Result.Any())
             {
-                return false;
+                throw new System.Exception("Usuario já cadastrado no banco de dados");
             }
 
             await _usuarioRepository.Adicionar(usuario);
@@ -89,7 +116,7 @@ namespace XP.Business.Services
 
             if (validator.IsValid) return true;
 
-            return false;
+            throw new InvalidDataException(validator.Errors.Select(x => x.ErrorMessage).Last());
         }
     }
 }

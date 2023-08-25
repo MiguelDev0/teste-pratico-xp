@@ -16,12 +16,6 @@ namespace XP.Data.Ropositories
         {
         }
 
-        public async Task<IEnumerable<Endereco>> ObterEnderecosPorUsuario(Guid usuarioId)
-        {
-            return await Db.Enderecos.AsNoTracking().Include(f => f.UsuarioId == usuarioId)
-                .OrderBy(e => e.Complemento).ToListAsync();
-        }
-
         public Task<Endereco> ObterEnderecoPrincipal(Guid usuarioId)
         {
             throw new NotImplementedException();

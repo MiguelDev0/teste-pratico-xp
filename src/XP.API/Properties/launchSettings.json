@@ -3,7 +3,7 @@
     "XP.API": {
       "commandName": "Project",
       "launchBrowser": true,
-      "launchUrl": "Usuario",
+      "launchUrl": "api/usuario",
       "environmentVariables": {
         "ASPNETCORE_ENVIRONMENT": "Development"
       },

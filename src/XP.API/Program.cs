@@ -1,5 +1,6 @@
 using Microsoft.AspNetCore.Mvc.ApiExplorer;
 using Microsoft.EntityFrameworkCore;
+using XP.API.Configuration;
 using XP.Business.Interfaces;
 using XP.Business.Services;
 using XP.Data.Context;
@@ -40,12 +41,14 @@ namespace XP.API
                 app.UseSwaggerUI();
             }
 
+            app.UseMiddleware<ExceptionMiddleware>();
+
             app.UseHttpsRedirection();
 
             app.UseAuthorization();
 
             app.UseSwagger();
-            app.MapControllers();
+            app.MapControllers();           
 
             app.Run();
         }

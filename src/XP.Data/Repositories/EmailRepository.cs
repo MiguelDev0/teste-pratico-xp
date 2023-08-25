@@ -13,11 +13,5 @@ namespace XP.Data.Ropositories
         {
             throw new NotImplementedException();
         }
-
-        public async Task<IEnumerable<Email>> ObterEmailsPorUsuario(Guid usuarioId)
-        {
-            return await Db.Emails.AsNoTracking().Include(f => f.UsuarioId == usuarioId)
-                .OrderBy(e => e.EmailCadastro).ToListAsync();
-        }
     }
 }
