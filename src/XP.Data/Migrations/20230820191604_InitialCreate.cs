@@ -57,7 +57,7 @@ namespace XP.Data.Migrations
                     Bairro = table.Column<string>(type: "varchar(100)", nullable: false),
                     Cidade = table.Column<string>(type: "varchar(100)", nullable: false),
                     Estado = table.Column<string>(type: "varchar(50)", nullable: false),
-                    EnderoPrincipal = table.Column<bool>(type: "bit", nullable: false)
+                    EnderecoPrincipal = table.Column<bool>(type: "bit", nullable: false)
                 },
                 constraints: table =>
                 {

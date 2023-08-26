@@ -2,6 +2,7 @@
 using XP.Business.Interfaces;
 using XP.Business.Models;
 using XP.Business.Models.Validations;
+using XP.Business.Util;
 
 namespace XP.Business.Services
 {
@@ -38,7 +39,7 @@ namespace XP.Business.Services
 
             var usuario = await _usuarioRepository.ObterDetalhesDoCliente(id);
 
-            if(usuario.Emails.Any(x => x.EmailPrincipal == 1) || usuario.Enderecos.Any(x => x.EnderoPrincipal == true))
+            if(usuario.Emails.Any(x => x.EmailPrincipal == 1) || usuario.Enderecos.Any(x => x.EnderecoPrincipal == true))
             {
                 throw new System.Exception("Usuario não possui email ou endereço principal");
             }
@@ -48,8 +49,16 @@ namespace XP.Business.Services
 
         public async Task<bool> Adicionar(Usuario usuario)
         {
-            if (!ExecutarValidacao(new UsuarioValidation(), usuario)) return false;
-            
+            var email = usuario.Emails.First(x => x.EmailCadastro != null);
+
+            var endereco = usuario.Enderecos.First(x => x.Id != null);
+
+            if (!ValidarDadosEntrada.ExecutarValidacao(new UsuarioValidation(), usuario)) return false;            
+
+            if(!ValidarDadosEntrada.ExecutarValidacao(new EmailValidations(), email)) return false;
+
+            if (!ValidarDadosEntrada.ExecutarValidacao(new EnderecoValidation(), endereco)) return false;
+
             if (_usuarioRepository.Buscar(f => f.Telefone == usuario.Telefone).Result.Any())
             {
                 throw new System.Exception("Usuario já cadastrado no banco de dados");
@@ -61,7 +70,15 @@ namespace XP.Business.Services
 
         public async Task<bool> Atualizar(Usuario usuario)
         {
-            if (!ExecutarValidacao(new UsuarioValidation(), usuario)) return false;
+            var email = usuario.Emails.First(x => x.EmailCadastro != null);
+
+            var endereco = usuario.Enderecos.First(x => x.Id != null);            
+
+            if (!ValidarDadosEntrada.ExecutarValidacao(new UsuarioValidation(), usuario)) return false;
+
+            if (!ValidarDadosEntrada.ExecutarValidacao(new EmailValidations(), email)) return false;
+
+            if (!ValidarDadosEntrada.ExecutarValidacao(new EnderecoValidation(), endereco)) return false;
 
             if (_usuarioRepository.Buscar(f => f.Telefone == usuario.Telefone && f.Id != usuario.Id).Result.Any())
             {
@@ -71,21 +88,6 @@ namespace XP.Business.Services
             await _usuarioRepository.Atualizar(usuario);
 
             return true;
-        }
-
-        public async Task AtualizarEmail(Email email)
-        {
-            if (!ExecutarValidacao(new EmailValidations(), email)) return;
-
-            await _emailRepository.Atualizar(email);
-        }
-
-
-        public async Task AtualizarEndereco(Endereco endereco)
-        {
-            if (!ExecutarValidacao(new EnderecoValidation(), endereco)) return;
-
-            await _enderecoRepository.Atualizar(endereco);
         }
 
         public async Task<bool> Remover(Guid id)
@@ -110,13 +112,6 @@ namespace XP.Business.Services
             _emailRepository?.Dispose();
         }
 
-        private bool ExecutarValidacao<TV, TE>(TV validacao, TE entidade) where TV : AbstractValidator<TE> where TE : Entity
-        {
-            var validator = validacao.Validate(entidade);
-
-            if (validator.IsValid) return true;
-
-            throw new InvalidDataException(validator.Errors.Select(x => x.ErrorMessage).Last());
-        }
+        
     }
 }

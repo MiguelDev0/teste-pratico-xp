@@ -11,7 +11,7 @@ namespace XP.Data.Ropositories
 
         public async Task<Usuario> ObterDetalhesDoCliente(Guid Id)
         {
-            return await Db.Usuarios.AsNoTracking().Include(c => c.Emails.Where(x => x.EmailPrincipal == 1)).Include(c => c.Enderecos.Where(x => x.EnderoPrincipal == true)).FirstOrDefaultAsync(c => c.Id == Id);             
+            return await Db.Usuarios.AsNoTracking().Include(c => c.Emails.Where(x => x.EmailPrincipal == 1)).Include(c => c.Enderecos.Where(x => x.EnderecoPrincipal == true)).FirstOrDefaultAsync(c => c.Id == Id);             
         }
     }
 }

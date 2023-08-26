@@ -10,7 +10,7 @@
         public string Bairro { get; set; }
         public string Cidade { get; set; }
         public string Estado { get; set; }
-        public bool EnderoPrincipal { get; set; }
+        public bool EnderecoPrincipal { get; set; }
 
         public Usuario Usuario { get; set; }
     }

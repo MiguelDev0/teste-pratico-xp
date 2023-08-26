@@ -71,7 +71,7 @@ namespace XP.Data.Migrations
                         .IsRequired()
                         .HasColumnType("varchar(250)");
 
-                    b.Property<bool>("EnderoPrincipal")
+                    b.Property<bool>("EnderecoPrincipal")
                         .HasColumnType("bit");
 
                     b.Property<string>("Estado")
